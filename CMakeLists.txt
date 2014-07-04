@@ -1,0 +1,110 @@
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR) 
+
+project(GPIMAGEPROC)
+set(EXE_NAME GPIMAGEPROC)
+set(PROJECT_NAME GPIMAGEPROC)
+set(DEFAULT FALSE) # I dont know the usage
+set(BEAGLE_INCLUDE_DIRS C:/GP/beagle-3.0.3/PACC
+						C:/GP/beagle-3.0.3/beagle/include
+						C:/GP/beagle-3.0.3/beagle/GA/include
+						C:/GP/beagle-3.0.3/beagle/GP/include
+						)
+include_directories(${BEAGLE_INCLUDE_DIRS})
+
+set(GP_LIBS 
+			C:/GP/beagle-3.0.3/MSVCPP/pacc-math/Debug/pacc-math.lib
+			C:/GP/beagle-3.0.3/MSVCPP/pacc-util/Debug/pacc-util.lib
+			C:/GP/beagle-3.0.3/MSVCPP/pacc-xml/Debug/pacc-xml.lib
+			C:/GP/beagle-3.0.3/MSVCPP/beagle/Debug/beagle.lib
+			C:/GP/beagle-3.0.3/MSVCPP/beagle-GP/Debug/beagle-GP.lib
+			C:/GP/beagle-3.0.3/MSVCPP/beagle-GA/Debug/beagle-GA.lib
+			)
+# Package for OpenCV
+#include_directories("C:/OpenCV/opencv/build/include")
+#set(OpenCV_LIBS C:/OpenCV/opencv/build/x64/vc10/lib/opencv_gpu246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_contrib246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_legacy246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_objdetect246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_calib3d246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_features2d246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_video246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_highgui246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_ml246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_nonfree246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_imgproc246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_flann246.lib
+#                C:/OpenCV/opencv/build/x64/vc10/lib/opencv_core246.lib
+#)
+include(C:/OpenCV/build/install/OpenCVConfig.cmake)
+set(OpenCV "C:/OpenCV/build/cmake")
+find_package(OpenCV REQUIRED)
+
+# Package for Qt
+find_package(Qt4 REQUIRED)
+find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL QtNetwork QtXml  REQUIRED)
+include(${QT_USE_FILE})
+list(APPEND ADDITIONAL_LIBS ${QT_LIBRARIES})
+
+SET(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+################################################################################
+set(SUBSYS_NAME pcl_processor)
+set(SUBSYS_DESC "My PCL Processor")
+set(SUBSYS_DEPS     common     features     io     kdtree apps)
+set(SUBSYS_LIBS)
+################################################################################
+# Default to not building for now
+#pcl_subsys_option(BUILD app_${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
+#pcl_subsys_depend(BUILD app_${SUBSYS_NAME} ${SUBSYS_DEPS})
+#pcl_add_doc(${SUBSYS_NAME})
+if(BUILD)
+  # Qt
+  if(NOT QT4_FOUND)
+    message(WARNING "Qt4 is needed for the app! It will not be built!")
+    set(BUILD FALSE)
+  endif()
+
+  # OpenGL
+  find_package(OpenGL REQUIRED)
+  if(OPENGL_FOUND AND OPENGL_GLU_FOUND)
+    list(APPEND ADDITIONAL_LIBS ${OPENGL_LIBRARIES})
+  else()
+    message(WARNING "OpenGL & GLU are needed for the app! It will not be built!")
+    set(BUILD FALSE)
+  endif()
+endif()
+################################################################################
+
+set(INCS
+)
+
+set(IMPL_INCS
+	EphemeralPercent.hpp
+	Mat.hpp
+	Operators/Impl/MatAdd.hpp
+	Operators/Impl/MatSub.hpp
+	Operators/Impl/MatMul.hpp
+	Operators/Impl/MatMulDou.hpp
+	Operators/Impl/MatSquare.hpp
+	Operators/Impl/MatBlur.hpp
+	Operators/Impl/MatIx.hpp
+	Operators/Impl/MatIy.hpp
+	FeatureEvalOp.hpp
+)
+
+set(SRCS
+	EphemeralPercent.cpp
+	Operators/MatAdd.cpp
+	Operators/MatSub.cpp
+	Operators/MatMul.cpp
+	Operators/MatMulDou.cpp
+	Operators/MatSquare.cpp
+	Operators/MatBlur.cpp
+	Operators/MatIx.cpp
+	Operators/MatIy.cpp
+	main.cpp    
+	FeatureEvalOp.cpp
+)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR}) # For the ui files
+add_executable(${EXE_NAME} ${SRCS} ${INCS} ${IMPL_INCS})
+target_link_libraries(${EXE_NAME} ${SUBSYS_LIBS} ${ADDITIONAL_LIBS} ${OpenCV_LIBS} ${GP_LIBS} GlU32 )
