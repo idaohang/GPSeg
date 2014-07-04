@@ -78,8 +78,8 @@ set(INCS
 )
 
 set(IMPL_INCS
-	EphemeralPercent.hpp
-	Mat.hpp
+        Operands/EphemeralPercent.hpp
+        Operands/Mat.hpp
 	Operators/Impl/MatAdd.hpp
 	Operators/Impl/MatSub.hpp
 	Operators/Impl/MatMul.hpp
@@ -88,11 +88,11 @@ set(IMPL_INCS
 	Operators/Impl/MatBlur.hpp
 	Operators/Impl/MatIx.hpp
 	Operators/Impl/MatIy.hpp
-	FeatureEvalOp.hpp
+        Evaluator/FeatureEvalOp.hpp
 )
 
 set(SRCS
-	EphemeralPercent.cpp
+        Operands/EphemeralPercent.cpp
 	Operators/MatAdd.cpp
 	Operators/MatSub.cpp
 	Operators/MatMul.cpp
@@ -102,7 +102,31 @@ set(SRCS
 	Operators/MatIx.cpp
 	Operators/MatIy.cpp
 	main.cpp    
-	FeatureEvalOp.cpp
+        mainwindow.cpp
+        Thread/Impl/SegController.cpp
+        Thread/Impl/SegEvolver.cpp
+        Evaluator/FeatureEvalOp.cpp
+)
+
+set(MOC_MAIN_WINDOW_INC     mainwindow.h)
+set(MOC_SEG_CONTROLLER_INC  Thread/SegController.h)
+set(MOC_SEG_EVOLVER_INC     Thread/SegEvolver.h)
+set(UI_MAIN_WINDOW          mainwindow.ui)
+
+QT4_WRAP_CPP(MOC_MAIN_WINDOW_SRC        ${MOC_MAIN_WINDOW_INC})
+QT4_WRAP_CPP(MOC_SEG_CONTROLLER_SRC     ${MOC_SEG_CONTROLLER_INC})
+QT4_WRAP_CPP(MOC_SEG_EVOLVER_SRC        ${MOC_SEG_EVOLVER_INC})
+QT4_WRAP_UI(UI_MAIN_WINDOW_INC          ${UI_MAIN_WINDOW})
+
+list(APPEND INCS    ${MOC_MAIN_WINDOW_INC}
+                    ${UI_MAIN_WINDOW_INC}
+                    ${MOC_SEG_CONTROLLER_INC}
+                    ${MOC_SEG_EVOLVER_INC}
+)
+
+list(APPEND SRCS    ${MOC_MAIN_WINDOW_SRC}
+                    ${MOC_SEG_CONTROLLER_SRC}
+                    ${MOC_SEG_EVOLVER_SRC}
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) # For the ui files

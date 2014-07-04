@@ -104,7 +104,7 @@
 #include <string>
 #include <vector>
 #include <opencv2\opencv.hpp>
-#include "Mat.hpp"
+#include "../Operands/Mat.hpp"
 
 /*!
  *  \class FeatureEvalOp FeatureEvalOp.hpp "FeatureEvalOp.hpp"

@@ -4,7 +4,7 @@
  *  \author Li Yuejiang
  */
 #include <beagle/GP.hpp>
-#include "../Mat.hpp"
+#include "../Operands/Mat.hpp"
 #include "Impl/MatMul.hpp"
 
 #include <cmath>
