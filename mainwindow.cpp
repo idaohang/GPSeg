@@ -12,12 +12,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QMainWindow::showMaximized();
-    connect(ui->actionStart_Evolving, SIGNAL(triggered(bool)), &controller, SLOT(startORstop(bool)));
+    //QMainWindow::showMaximized();
+    //connect(ui->actionStart_Evolving, SIGNAL(triggered(bool)), &controller, SLOT(startORstop(bool)));
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_actionStart_Evolving_triggered(bool checked)
+{
+    if(checked)
+    {
+        evol = new EvolveThread();
+        evol->start();
+    } else
+    {
+        evol->exit();
+    }
 }

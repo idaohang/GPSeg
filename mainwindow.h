@@ -5,7 +5,7 @@
 #include <QImage>
 #include <QTimer>
 #include "Thread/SegController.h"
-
+#include "Thread/EvolveThread.h"
 namespace Ui {
 class MainWindow;
 }
@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 private:
     //typedef boost::shared_ptr<Controller> ControllerPtr;
-    Controller controller;
+    //Controller controller;
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -23,10 +23,13 @@ public:
 private slots:
 
 
+    void on_actionStart_Evolving_triggered(bool checked);
+
 signals:
 
 private:
     Ui::MainWindow *ui;
+    EvolveThread *evol;
 
 
 };

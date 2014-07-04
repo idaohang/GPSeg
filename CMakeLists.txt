@@ -96,28 +96,33 @@ set(SRCS
         mainwindow.cpp
         Thread/Impl/SegController.cpp
         Thread/Impl/SegEvolver.cpp
+        Thread/EvolveThread.cpp
         Evaluator/FeatureEvalOp.cpp
 )
 
 set(MOC_MAIN_WINDOW_INC     mainwindow.h)
 set(MOC_SEG_CONTROLLER_INC  Thread/SegController.h)
 set(MOC_SEG_EVOLVER_INC     Thread/SegEvolver.h)
+set(MOC_EVOLVE_THREAD_INC   Thread/EvolveThread.h)
 set(UI_MAIN_WINDOW          mainwindow.ui)
 
 QT4_WRAP_CPP(MOC_MAIN_WINDOW_SRC        ${MOC_MAIN_WINDOW_INC})
 QT4_WRAP_CPP(MOC_SEG_CONTROLLER_SRC     ${MOC_SEG_CONTROLLER_INC})
 QT4_WRAP_CPP(MOC_SEG_EVOLVER_SRC        ${MOC_SEG_EVOLVER_INC})
+QT4_WRAP_CPP(MOC_EVOLVE_THREAD_SRC      ${MOC_EVOLVE_THREAD_INC})
 QT4_WRAP_UI(UI_MAIN_WINDOW_INC          ${UI_MAIN_WINDOW})
 
 list(APPEND INCS    ${MOC_MAIN_WINDOW_INC}
                     ${UI_MAIN_WINDOW_INC}
                     ${MOC_SEG_CONTROLLER_INC}
                     ${MOC_SEG_EVOLVER_INC}
+                    ${MOC_EVOLVE_THREAD_INC}
 )
 
 list(APPEND SRCS    ${MOC_MAIN_WINDOW_SRC}
                     ${MOC_SEG_CONTROLLER_SRC}
                     ${MOC_SEG_EVOLVER_SRC}
+                    ${MOC_EVOLVE_THREAD_SRC}
 )
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}) # For the ui files
