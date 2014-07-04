@@ -47,15 +47,6 @@ list(APPEND ADDITIONAL_LIBS ${QT_LIBRARIES})
 
 SET(CMAKE_CXX_FLAGS_DEBUG "/MTd")
 ################################################################################
-set(SUBSYS_NAME pcl_processor)
-set(SUBSYS_DESC "My PCL Processor")
-set(SUBSYS_DEPS     common     features     io     kdtree apps)
-set(SUBSYS_LIBS)
-################################################################################
-# Default to not building for now
-#pcl_subsys_option(BUILD app_${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} ${REASON})
-#pcl_subsys_depend(BUILD app_${SUBSYS_NAME} ${SUBSYS_DEPS})
-#pcl_add_doc(${SUBSYS_NAME})
 if(BUILD)
   # Qt
   if(NOT QT4_FOUND)
