@@ -4,8 +4,6 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QTimer>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
 #include "Thread/SegController.h"
 #include "Thread/EvolveThread.h"
 namespace Ui {
@@ -33,9 +31,6 @@ signals:
 private:
     Ui::MainWindow *ui;
     EvolveThread *evol;
-    QGraphicsScene *scene;
-
-
 };
 
 #endif // MAINWINDOW_H

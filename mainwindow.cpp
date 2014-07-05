@@ -4,21 +4,18 @@
 #include <QApplication>
 #include <QtCore>
 #include <QFileDialog>
-#include <QGraphicsPixmapItem>
+#include <QLabel>
 #include <opencv2/opencv.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    scene(new QGraphicsScene(this)),
     evol(new EvolveThread())
 {
     ui->setupUi(this);
-    ui->graphicsView->setScene(scene);
+
     connect(this, SIGNAL(openOriginFile(QString)), evol, SLOT(setOriginFilename(QString)));
     connect(this, SIGNAL(openTargetFile(QString)), evol, SLOT(setTargetFilename(QString)));
-    //QMainWindow::showMaximized();
-    //connect(ui->actionStart_Evolving, SIGNAL(triggered(bool)), &controller, SLOT(startORstop(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -53,9 +50,7 @@ void MainWindow::on_actionOpen_Origin_triggered()
         return;
     else
     {
-        QGraphicsPixmapItem * pix = scene->addPixmap(QPixmap(filename));
-        pix->setFlag(QGraphicsItem::ItemIsMovable);
-        pix->setScale(0.3);
+        ui->label_origin->setPixmap(QPixmap(filename).scaled(ui->label_origin->width(),ui->label_origin->height(),Qt::KeepAspectRatio));
         emit openOriginFile(filename);
     }
 
@@ -68,9 +63,7 @@ void MainWindow::on_actionOpen_Target_triggered()
         return;
     else
     {
-        QGraphicsPixmapItem * pix = scene->addPixmap(QPixmap(filename));
-        pix->setFlag(QGraphicsItem::ItemIsMovable);
-        pix->setScale(0.3);
+        ui->label_target->setPixmap(QPixmap(filename).scaled(ui->label_target->width(),ui->label_target->height(),Qt::KeepAspectRatio));
         emit openTargetFile(filename);
     }
 }
