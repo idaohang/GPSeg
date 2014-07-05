@@ -19,10 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-
 private slots:
-
-
     void on_actionStart_Evolving_triggered(bool checked);
 
 signals:

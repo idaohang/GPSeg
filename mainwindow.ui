@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="enabled">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="geometry">
    <rect>
@@ -85,6 +85,14 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuHello">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen_Origin"/>
+    <addaction name="actionOpen_Target"/>
+   </widget>
+   <addaction name="menuHello"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_Origin">
@@ -93,6 +101,9 @@
    </property>
   </action>
   <action name="actionOpen_Target">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Open Target</string>
    </property>

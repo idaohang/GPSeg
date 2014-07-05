@@ -3,22 +3,24 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(GPIMAGEPROC)
 set(EXE_NAME GPIMAGEPROC)
 set(PROJECT_NAME GPIMAGEPROC)
-set(DEFAULT FALSE) # I dont know the usage
+
+set(DEFAULT FALSE)
+
 set(BEAGLE_INCLUDE_DIRS C:/GP/beagle-3.0.3/PACC
-						C:/GP/beagle-3.0.3/beagle/include
-						C:/GP/beagle-3.0.3/beagle/GA/include
-						C:/GP/beagle-3.0.3/beagle/GP/include
-						)
+                        C:/GP/beagle-3.0.3/beagle/include
+                        C:/GP/beagle-3.0.3/beagle/GA/include
+                        C:/GP/beagle-3.0.3/beagle/GP/include
+                        )
 include_directories(${BEAGLE_INCLUDE_DIRS})
 
 set(GP_LIBS 
-			C:/GP/beagle-3.0.3/MSVCPP/pacc-math/Debug/pacc-math.lib
-			C:/GP/beagle-3.0.3/MSVCPP/pacc-util/Debug/pacc-util.lib
-			C:/GP/beagle-3.0.3/MSVCPP/pacc-xml/Debug/pacc-xml.lib
-			C:/GP/beagle-3.0.3/MSVCPP/beagle/Debug/beagle.lib
-			C:/GP/beagle-3.0.3/MSVCPP/beagle-GP/Debug/beagle-GP.lib
-			C:/GP/beagle-3.0.3/MSVCPP/beagle-GA/Debug/beagle-GA.lib
-			)
+                        C:/GP/beagle-3.0.3/MSVCPP/pacc-math/Debug/pacc-math.lib
+                        C:/GP/beagle-3.0.3/MSVCPP/pacc-util/Debug/pacc-util.lib
+                        C:/GP/beagle-3.0.3/MSVCPP/pacc-xml/Debug/pacc-xml.lib
+                        C:/GP/beagle-3.0.3/MSVCPP/beagle/Debug/beagle.lib
+                        C:/GP/beagle-3.0.3/MSVCPP/beagle-GP/Debug/beagle-GP.lib
+                        C:/GP/beagle-3.0.3/MSVCPP/beagle-GA/Debug/beagle-GA.lib
+                        )
 # Package for OpenCV
 include_directories("C:/opencv/opencv/build/include")
 set(OpenCV_LIBS C:/opencv/opencv/build/x86/vc10/lib/opencv_gpu247d.lib
@@ -112,6 +114,8 @@ QT4_WRAP_CPP(MOC_SEG_EVOLVER_SRC        ${MOC_SEG_EVOLVER_INC})
 QT4_WRAP_CPP(MOC_EVOLVE_THREAD_SRC      ${MOC_EVOLVE_THREAD_INC})
 QT4_WRAP_UI(UI_MAIN_WINDOW_INC          ${UI_MAIN_WINDOW})
 
+include_directories(${CMAKE_CURRENT_BINARY_DIR}) # For the ui files
+
 list(APPEND INCS    ${MOC_MAIN_WINDOW_INC}
                     ${UI_MAIN_WINDOW_INC}
                     ${MOC_SEG_CONTROLLER_INC}
@@ -125,6 +129,5 @@ list(APPEND SRCS    ${MOC_MAIN_WINDOW_SRC}
                     ${MOC_EVOLVE_THREAD_SRC}
 )
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}) # For the ui files
 add_executable(${EXE_NAME} ${SRCS} ${INCS} ${IMPL_INCS})
 target_link_libraries(${EXE_NAME} ${SUBSYS_LIBS} ${ADDITIONAL_LIBS} ${OpenCV_LIBS} ${GP_LIBS} GlU32 )

@@ -6,7 +6,6 @@
 #include <QFileDialog>
 #include <opencv2/opencv.hpp>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
