@@ -26,7 +26,9 @@
 using namespace std;
 using namespace Beagle;
 
-EvolveThread::EvolveThread()
+EvolveThread::EvolveThread():
+    _strTargetFile(""),
+    _strOriginFile("")
 {
 
 }
@@ -59,8 +61,7 @@ void EvolveThread::run()
         GP::System::Handle lSystem = new GP::System(lSet);
 
         // 3: Build operators.
-        std::string lTrainingFilename = "Training";
-        FeatureEvalOp::Handle lEvalOp = new FeatureEvalOp(lTrainingFilename.c_str());
+        FeatureEvalOp::Handle lEvalOp = new FeatureEvalOp("message");
 
         // 4: Build an evolver and a vivarium.
         Evolver::Handle lEvolver = new GP::Evolver(lEvalOp);
@@ -83,4 +84,14 @@ void EvolveThread::run()
     catch(...) {
         cerr << "Unknown exception catched!" << endl << flush;
     }
+}
+
+void EvolveThread::setTargetFilename(QString target)
+{
+    _strTargetFile = QString(target);
+}
+
+void EvolveThread::setOriginFilename(QString origin)
+{
+    _strOriginFile = QString(origin);
 }

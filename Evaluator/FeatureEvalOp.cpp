@@ -51,17 +51,18 @@ int FeatureEvalOp::countPts(const cv::Mat & img)
  *  \param inFilename Default filename used.
  */
 FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
-  GP::EvaluationOp("FeatureEvalOp")//,
+    GP::EvaluationOp("FeatureEvalOp"),
+    _bestFitness(0.0)
   //mFilename(NULL),
   //mFilenameDefault(inFilename)
 {
 
-	// init Gassian Distribution
+    // init Gassian Distribution
     double _gd[] = {0.13362, 0.16152, 0.1936, 0.23014, 0.27134, 0.31732, 0.36812, 0.42372, 0.48392, 0.5485, 0.61708, 0.68916, 0.76418, 0.84148, 0.92034, 1, 0.92034, 0.84148, 0.76418, 0.68916, 0.61708, 0.5485, 0.48392, 0.42372, 0.36812, 0.31732, 0.27134, 0.23014, 0.1936, 0.16152, 0.13362};
-	for(int i=0; i<31; i++)
-	{
+    for(int i=0; i<31; i++)
+    {
         _dGaussianDist[i] = _gd[i];
-	}
+    }
 
     // populate features
     std::cout << "Populate Features..." << std::endl;
@@ -92,7 +93,7 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
  */
 void FeatureEvalOp::initialize(Beagle::System& ioSystem)
 {
-  Beagle::GP::EvaluationOp::initialize(ioSystem);
+    Beagle::GP::EvaluationOp::initialize(ioSystem);
 }
 
 
@@ -128,7 +129,7 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
     // vectors to save statistics
     std::vector<double> vprecision, vrecall, vfitness;
     int maxIndex = 0;
-	double lFitness = 0;
+    double lFitness = 0;
 
     // set 31 thresholds, and get the best fitness value.
     for (int c = 1; c < 32; c++)
@@ -146,16 +147,25 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
 
         // save best fitness value and its index
         if (lFitness < fitness)
-		{
-			lFitness = fitness;
+        {
+            lFitness = fitness;
             maxIndex = c-1;
-		}
+        }
     }
 
+    // display detection result of best individual
+    if (lFitness > _bestFitness)
+    {
+        FeatureEvalOp::detectFeaturePts(norm, _detMask, (maxIndex+1)*8);
+        // calculate recall and precision
+        double recall, precision, fitness;
+        FeatureEvalOp::calculateStatistics(_detMask, _trgMask, _trgPixelNum, recall, precision, fitness, true);
+        _bestFitness = lFitness;
+    }
     // output fitness value and tree statistics
     int iTreeDepth = inIndividual.getMaxTreeDepth();
     int iTreeNodesNo = inIndividual.getTotalNodes();
-	std::cout << "Fitness value:  " << lFitness << "; TreeDepth: " << iTreeDepth << "; TreeNodes:" << iTreeNodesNo <<  std::endl;
+    std::cout << "Fitness value:  " << lFitness << "; TreeDepth: " << iTreeDepth << "; TreeNodes:" << iTreeNodesNo <<  std::endl;
 
     // return a fitness value with penalty
     return new FitnessSimple(_dGaussianDist[maxIndex]*lFitness);
@@ -168,7 +178,7 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
  */
 void FeatureEvalOp::postInit(Beagle::System& ioSystem)
 {
-	GP::EvaluationOp::postInit(ioSystem);
+    GP::EvaluationOp::postInit(ioSystem);
 }
 
 
@@ -208,16 +218,16 @@ void FeatureEvalOp::detectFeaturePts(const cv::Mat & result, cv::Mat & ptsMask, 
 void FeatureEvalOp::calculateStatistics(const cv::Mat &detected_mask, const cv::Mat &desired_mask, int desiredTotalNumPts, double &recall, double &precision, double &fitness, bool isShow)
 {
     int num_matched, num_response;
-	
+
     num_response = countPts(detected_mask);
-	
+
     if (isShow) {
         cv::imshow("Detected Points", detected_mask);
         cv::waitKey(1);
     }
 
     cv::Mat matMatchedPts = detected_mask & desired_mask;
-	
+
     num_matched = countPts(matMatchedPts);
 
     if (isShow) {

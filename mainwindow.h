@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QTimer>
+#include <QGraphicsScene>
+#include <QGraphicsItem>
 #include "Thread/SegController.h"
 #include "Thread/EvolveThread.h"
 namespace Ui {
@@ -21,12 +23,17 @@ public:
 
 private slots:
     void on_actionStart_Evolving_triggered(bool checked);
+    void on_actionOpen_Origin_triggered();
+    void on_actionOpen_Target_triggered();
 
 signals:
+    void openOriginFile(QString filename);
+    void openTargetFile(QString filename);
 
 private:
     Ui::MainWindow *ui;
     EvolveThread *evol;
+    QGraphicsScene *scene;
 
 
 };

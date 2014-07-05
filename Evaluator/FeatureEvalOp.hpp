@@ -80,6 +80,7 @@
 #include <string>
 #include <vector>
 #include <opencv2\opencv.hpp>
+#include <QObject>
 #include "../Operands/Mat.hpp"
 
 /*!
@@ -87,8 +88,8 @@
  *  \brief The individual evaluation class operator for the Image feature extraction problem.
  *  \ingroup Spambase
  */
-class FeatureEvalOp : public Beagle::GP::EvaluationOp {
-
+class FeatureEvalOp : public QObject, public Beagle::GP::EvaluationOp {
+Q_OBJECT
 public:
 
   //! FeatureEvalOp allocator type.
@@ -130,6 +131,11 @@ protected:
   int										_trgPixelNum;
   // Features
   Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
+
+  // store best fitness value acheived
+  float _bestFitness;
+
+signals:
 
 };
 
