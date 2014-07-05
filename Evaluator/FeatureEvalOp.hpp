@@ -27,71 +27,47 @@
 /*!
  *  \file   FeatureEvalOp.hpp
  *  \brief  Definition of the type FeatureEvalOp.
- *  \author Christian Gagne
- *  \author Marc Parizeau
- *  $Revision: 1.7.2.1 $
- *  $Date: 2007/05/09 01:51:24 $
+ *  \author LEE
+ *  \author YUEJIANG
  */
 
 /*!
- *  \defgroup Spambase Spambase Example
- *  \brief SPAM e-mail database (spambase): Machine learning using strongly-typed GP
+ *  \defgroup Image Segmentation
+ *  \brief Image Seg: Machine learning using strongly-typed GP
  *     with Open BEAGLE.
  *
  *  \par Objective
- *  Find a program the will successfully predict whether a given e-mail is spam
- *  or not from some extracted features.
+ *  Find a program the will successfully segment the image
  *
  *  \par Comments
- *  The evolved programs works on floating-point values AND Booleans values.
- *  The programs must return a Boolean value which must be true if e-mail is
- *  spam, and false otherwise. Don't expect too much from this program as
+ *  Don't expect too much from this program as
  *  it is quite basic and not oriented toward performance. It is there mainly
  *  to illustrate the use of strongly-typed GP with Open BEAGLE.
  *
  *  \par Terminal set
- *  - IN0, IN1, ...  up to IN56, the e-mail features.      [floating-point]
- *  - 0 and 1, two Boolean constants.                      [Boolean]
- *  - Ephemeral constants randomly generated in $[0,100]$  [floating-point]
+ *  - Features channels of image
+ *  - Ephemeral constants randomly generated in $[0,1]$  [floating-point]
  *
  *  \par Function set
- *  - AND               [Inputs: Booleans,        Output: Boolean]
- *  - OR                [Input:  Boolean,         Output: Boolean]
- *  - NOT               [Inputs: Booleans,        Output: Boolean]
- *  - +                 [Inputs: floating-points, Output: floating-point]
- *  - -                 [Inputs: floating-points, Output: floating-point]
- *  - *                 [Inputs: floating-points, Output: floating-point]
- *  - /                 [Inputs: floating-points, Output: floating-point]
- *  - <                 [Inputs: floating-points, Output: Booleans]
- *  - ==                [Inputs: floating-points, Output: Booleans]
- *  - if-then-else      [1st Input: Boolean, 2nd & 3rd Input: floating-points,
- *                       Output: floating-point]
+ *  - +                 [Inputs: Mats,   Output: Mat]
+ *  - -                 [Inputs: Mats,   Output: Mat]
+ *  - *                 [Inputs: Mats,   Output: Mat]
+ *  - /                 [Inputs: Mats,   Output: Mat]
+ *  - BLUR              [Inputs: Mats,   Output: Mat]
+ *  - Ix                [Inputs: Mats,   Output: Mat]
+ *  - Iy                [Inputs: Mats,   Output: Mat]
+ *
  *
  *  \par Fitness cases
- *  A random sample of 400 e-mails over the database, re-chosen for
- *  each fitness evaluation.
  *
  *  \par Hits
- *  Number of correct outputs obtained over the 400 fitness cases.
- *
  *  \par Raw fitness
- *  Ignored (always 0).
- *
  *  \par Standardized fitness
- *  Rate of correct outputs over the fitness cases where
- *  the desired output was 0 (non-spam).
- *
  *  \par Adjusted fitness
- *  Rate of correct outputs over the fitness cases where
- *  the desired output was 1 (spam).
- *
  *  \par Normalized fitness
  *  Rate of correct outputs obtained over all the 400 fitness cases.
  *
  *  \par Stopping criteria
- *  When the best individual scores 400 hits or when the evolution reaches
- *  the maximum number of generations.
- *
  *  \par Reference
  *  Machine learning repository, http://www.ics.uci.edu/~mlearn/MLRepository.html
  *
@@ -140,25 +116,20 @@ public:
     // calculate recall, precision, fitness value
     static void calculateStatistics(const cv::Mat & detected_mask, const cv::Mat & desired_mask, int desiredTotalNumPts, double & recall, double & precision, double & fitness, bool isShow = true);
 
-
 protected:
-  //Beagle::String::Handle                     mFilename;        //!< Filename containing the data.
-  //Beagle::string                             mFilenameDefault; //!< Default filename used.
-  //Beagle::Mat I, Ix, Iy, Ix2, Iy2, IxIy, AIx2, AIy2, AIxIy;
-  //Beagle::Mat _xx, _xy, _xz, _yy, _yz, _zz;
-  //Beagle::Mat _f[24];
-
-  // features
-  Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
-
   //Gaussian distribution
   double _dGaussianDist[31];
 
-  //cv::Mat									mTrainingImg;
-  cv::Mat									_detected_cormsk;
-  cv::Mat									_desired_cormsk;
-  int										num_desired;
-  cv::Mat 									mOutput;
+  // Origin Image
+  cv::Mat									_originImage;
+  // Detected Result represented by Binary Mask
+  cv::Mat									_detMask;
+  // Target of Evolutionary Computation represented by Binary Mask
+  cv::Mat									_trgMask;
+  // Number of Pixels in Target Mask
+  int										_trgPixelNum;
+  // Features
+  Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
 
 };
 

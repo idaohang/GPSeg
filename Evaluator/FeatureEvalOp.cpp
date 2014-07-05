@@ -15,6 +15,7 @@
 
 using namespace Beagle;
 
+// count the number of true pixels in mask image
 int FeatureEvalOp::countPts(const cv::Mat & img)
 {
     assert(img.type() == CV_8UC1);
@@ -63,7 +64,7 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
 	}
 
     // populate features
-    std::cout << "Populate Features...";
+    std::cout << "Populate Features..." << std::endl;
 
     _r.getWrappedValue() = cv::imread("r.bmp",0);
     _g.getWrappedValue() = cv::imread("g.bmp",0);
@@ -73,26 +74,14 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
     _v.getWrappedValue() = cv::imread("v.bmp",0);
     _i.getWrappedValue() = cv::imread("i.bmp",0);
 
-//    cv::Mat _r = cv::imread("r.bmp",0);
-//    cv::Mat _g = cv::imread("g.bmp",0);
-//    cv::Mat _b = cv::imread("b.bmp",0);
-//    cv::Mat _h = cv::imread("h.bmp",0);
-//    cv::Mat _s = cv::imread("s.bmp",0);
-//    cv::Mat _v = cv::imread("v.bmp",0);
-//    cv::Mat _i = cv::imread("i.bmp",0);
-
-//    std::cout << _r.cols << ":" << _r.rows << ":" << _r.type() << std::endl;
-//    std::cout << CV_8UC1 << ":" << CV_8UC3 << ":" << CV_8U << std::endl;
-//    cv::imshow("r", _r);
-//    cv::waitKey(5);
-    //std::cout << "Mask [ cols : " <<  _i.getWrappedValue().cols << "; rows : " <<  _i.getWrappedValue().rows << " ] " << std::endl;
+    std::cout << "Features [ cols : " <<  _i.getWrappedValue().cols << "; rows : " <<  _i.getWrappedValue().rows << " ] " << std::endl;
 
     // populate target
-    std::cout << "Populate Target...";
-    _desired_cormsk = cv::imread("mask.bmp",0);
-    num_desired = countPts(_desired_cormsk);
-    std::cout << "Total target points:" << num_desired << std::endl;
-    std::cout << "Mask [ cols : " <<  _desired_cormsk.cols << "; rows : " <<  _desired_cormsk.rows << " ] " << std::endl;
+    std::cout << "Populate Target..." << std::endl;
+    _trgMask = cv::imread("mask.bmp",0);
+    _trgPixelNum = countPts(_trgMask);
+    std::cout << "Total target points:" << _trgPixelNum << std::endl;
+    std::cout << "Mask [ cols : " <<  _trgMask.cols << "; rows : " <<  _trgMask.rows << " ] " << std::endl;
 
 }
 
@@ -123,51 +112,58 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
     setValue("v", _v, ioContext);
     setValue("i", _i, ioContext);
 
+    // calculate the response matrix
     Mat lResult;
-
     inIndividual.run(lResult, ioContext);
-	
-	int iTreeDepth = inIndividual.getMaxTreeDepth();
-	int iTreeNodesNo = inIndividual.getTotalNodes();
 
-	cv::Mat_<float>& result = lResult.getWrappedValue();
+    //cv::Mat_<float>& result = lResult.getWrappedValue();
+    // Normalize to Interval [0 ,255]
     cv::Mat norm;
-    // normalizing to period [0, 255]
-    cv::normalize( result, norm, 0, 255, cv::NORM_MINMAX, CV_8UC1, cv::Mat() );
+    cv::normalize( lResult.getWrappedValue(), norm, 0, 255, cv::NORM_MINMAX, CV_8UC1, cv::Mat() );
 
+    // show Normalized Response Value
     cv::imshow("Response", norm);
     cv::waitKey(1);
 
-	std::vector<double> vprecision, vrecall;
-
-	int max_thre = 0;
+    // vectors to save statistics
+    std::vector<double> vprecision, vrecall, vfitness;
+    int maxIndex = 0;
 	double lFitness = 0;
+
+    // set 31 thresholds, and get the best fitness value.
     for (int c = 1; c < 32; c++)
     {
         // set a detection threshold
         int threshold = 8 * c;
-        // calculate detected pts
-        cv::Mat matDetectedPts;
-        FeatureEvalOp::detectFeaturePts(norm, matDetectedPts, threshold);
+
+        // thresholding to get detected mask
+        FeatureEvalOp::detectFeaturePts(norm, _detMask, threshold);
+
         // calculate recall and precision
         double recall, precision, fitness;
-        FeatureEvalOp::calculateStatistics(matDetectedPts, _desired_cormsk, num_desired, recall, precision, fitness, false);
-        vprecision.push_back(precision);
-        vrecall.push_back(recall);
-		if (lFitness < fitness) 
+        FeatureEvalOp::calculateStatistics(_detMask, _trgMask, _trgPixelNum, recall, precision, fitness, false);
+        vprecision.push_back(precision); vrecall.push_back(recall); vfitness.push_back(fitness);
+
+        // save best fitness value and its index
+        if (lFitness < fitness)
 		{
 			lFitness = fitness;
-			max_thre = c-1;
+            maxIndex = c-1;
 		}
     }
 
+    // output fitness value and tree statistics
+    int iTreeDepth = inIndividual.getMaxTreeDepth();
+    int iTreeNodesNo = inIndividual.getTotalNodes();
 	std::cout << "Fitness value:  " << lFitness << "; TreeDepth: " << iTreeDepth << "; TreeNodes:" << iTreeNodesNo <<  std::endl;
-	return new FitnessSimple(_dGaussianDist[max_thre]*lFitness);
+
+    // return a fitness value with penalty
+    return new FitnessSimple(_dGaussianDist[maxIndex]*lFitness);
 }
 
 
 /*!
- *  \brief Post-initialization hook the spambase evaluation operator.
+ *  \brief Post-initialization.
  *  \param ioSystem System of the evolution.
  */
 void FeatureEvalOp::postInit(Beagle::System& ioSystem)
@@ -177,8 +173,8 @@ void FeatureEvalOp::postInit(Beagle::System& ioSystem)
 
 
 /*!
- *  \brief Read data of the spambase problem.
- *  \param inFilename Name of the file in which the spambase problem data are.
+ *  \brief Read data
+ *  \param inFilename Name of the file.
  *  \param inSizeData Number of entry in the data base.
  *  \throw InternalException When the file format is not valid.
  */

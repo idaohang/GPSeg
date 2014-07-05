@@ -47,7 +47,6 @@ const std::type_info* MatSub::getReturnType(Beagle::GP::Context& ioContext) cons
 
 #endif // BEAGLE_HAVE_RTTI
 
-
 /*!
  *  \brief Execute the Add operation between two Mat, returning a Mat.
  *  \param outDatum Result of the Add.
