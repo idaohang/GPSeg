@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QTimer>
+#include <QtXml>
+#include <QStandardItemModel>
 #include "Thread/SegController.h"
 #include "Thread/EvolveThread.h"
 namespace Ui {
@@ -24,13 +26,31 @@ private slots:
     void on_actionOpen_Origin_triggered();
     void on_actionOpen_Target_triggered();
 
+    // set the GP Log Directory
+    void on_setGPLogDir(QString dirname);
+
+public slots:
+    void tableview_individuals_clicked(QModelIndex index);
+    void tableview_generations_clicked(QModelIndex index);
+
 signals:
     void openOriginFile(QString filename);
     void openTargetFile(QString filename);
 
 private:
     Ui::MainWindow *ui;
-    EvolveThread *evol;
+
+    // Evolving Thread
+    EvolveThread *_evol;
+
+    // GP Log File Directory
+    QString _strLogDir;
+
+    // Models of Table View
+    // individuals' view model
+    QStandardItemModel * _modelIndividuals;
+    // generations' view model
+    QStandardItemModel * _modelGenerations;
 };
 
 #endif // MAINWINDOW_H
