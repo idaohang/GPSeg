@@ -62,7 +62,10 @@ void EvolveThread::run()
 
         // 3: Build operators.
         FeatureEvalOp::Handle lEvalOp = new FeatureEvalOp("message");
-        lEvalOp->sett
+        lEvalOp->setObjectMask(_strTargetFile);
+        lEvalOp->setOriginImage(_strOriginFile);
+
+        std::cout << "8888888" << std::endl;
         // 4: Build an evolver and a vivarium.
         Evolver::Handle lEvolver = new GP::Evolver(lEvalOp);
         GP::Vivarium::Handle lVivarium = new GP::Vivarium;

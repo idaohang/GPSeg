@@ -110,8 +110,8 @@ public:
     virtual void postInit(Beagle::System& ioSystem);
     void readData(Beagle::string inFilename, unsigned int inSizeData);
 
-    void setOriginImage(QString );
-    void setObjectMask(QString);
+    void setOriginImage(QString filename);
+    void setObjectMask(QString filename);
 
 public:
     static int countPts(const cv::Mat &img);
@@ -132,6 +132,7 @@ protected:
     cv::Mat									_trgMask;
     // Number of Pixels in Target Mask
     int										_trgPixelNum;
+
     // Features
     Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
 

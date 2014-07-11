@@ -127,7 +127,7 @@ void MainWindow::tableview_generations_clicked(QModelIndex index)
     strList.append("Fitness");
     strList.append("Size");
     strList.append("Depth");
-    strList.append("Genotype");
+    //strList.append("Genotype");
     _modelIndividuals->setHorizontalHeaderLabels(strList);
 
     // get individuals
@@ -136,30 +136,28 @@ void MainWindow::tableview_generations_clicked(QModelIndex index)
     // for each individual get fitness value and genotype
     for(int i = 0; i < individuals.size(); i++)
     {
-        QDomElement elem = individuals.at(i).firstChildElement();
+        QDomElement individual = individuals.at(i).toElement();
+        int indi_size = individual.attribute("size").toInt();
 
-        // add individual index
-        QList<QStandardItem *> items;
+        QDomElement elem = individual.firstChildElement();
+        QString fitness = elem.text();
 
-        while (!elem.isNull())
+        for (int j = 0; j < indi_size; j++)
         {
-
-            if ( elem.tagName() == "Fitness" ) {
-                items.append(new QStandardItem(elem.text()));
-            }
-
-            if ( elem.tagName() == "Genotype" ) {
-                items.append(new QStandardItem( elem.attribute("size") ));
-                items.append(new QStandardItem( elem.attribute("depth") ));
-                QString str;
-                QTextStream stream(&str);
-                stream << elem.firstChildElement();
-                stream.flush();
-                items.append(new QStandardItem( str.trimmed() ));
-            }
             elem = elem.nextSiblingElement();
+            // add individual index
+            QList<QStandardItem *> items;
+            items.append(new QStandardItem( fitness ));
+            items.append(new QStandardItem( elem.attribute("size") ));
+            items.append(new QStandardItem( elem.attribute("depth") ));
+            QString str;
+            QTextStream stream(&str);
+            stream << elem.firstChildElement();
+            stream.flush();
+            items.append(new QStandardItem( str.trimmed() ));
+            _modelIndividuals->appendRow(items);
         }
-        _modelIndividuals->appendRow(items);
+
     }
     ui->tableView_Individuals->resizeColumnsToContents();
     ui->tableView_Individuals->sortByColumn(0);

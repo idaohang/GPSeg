@@ -192,6 +192,49 @@ void FeatureEvalOp::readData(Beagle::string inFilename, unsigned int inSizeData)
 {
 }
 
+void FeatureEvalOp::setOriginImage(QString filename)
+{
+    // populate features
+    if (filename == "") return;
+
+    std::cout << "Populate Features..." << std::endl;
+    cv::Mat i;
+    cv::Mat origin = cv::imread(filename.toAscii().data());
+
+    cv::cvtColor(origin, i, CV_BGR2GRAY);
+    i.convertTo(_i.getWrappedValue(), CV_32FC1);
+    cv::Mat hsv;
+    cv::cvtColor(origin, hsv, CV_BGR2HSV);
+
+    cv::Mat rgbA[3];
+    cv::split(origin, rgbA);
+    rgbA[2].convertTo(_r.getWrappedValue(), CV_32FC1);
+    rgbA[1].convertTo(_g.getWrappedValue(), CV_32FC1);
+    rgbA[0].convertTo(_b.getWrappedValue(), CV_32FC1);
+    cv::imshow("ruchar", rgbA[2]);
+    cv::imshow("rfloat", _r.getWrappedValue());
+
+    cv::Mat hsvA[3];
+    cv::split(hsv, hsvA);
+    hsvA[2].convertTo(_v.getWrappedValue(), CV_32FC1);
+    hsvA[1].convertTo(_s.getWrappedValue(), CV_32FC1);
+    hsvA[0].convertTo(_i.getWrappedValue(), CV_32FC1);
+    cv::imshow("vuchar", hsvA[2]);
+    cv::imshow("vfloat", _v.getWrappedValue());
+
+    cv::waitKey(1);
+}
+
+void FeatureEvalOp::setObjectMask(QString filename)
+{
+    // populate target
+    std::cout << "Populate Target..." << std::endl;
+    _trgMask = cv::imread(filename.toAscii().data(),0);
+    _trgPixelNum = countPts(_trgMask);
+    std::cout << "Total target points:" << _trgPixelNum << std::endl;
+    std::cout << "Mask [ cols : " <<  _trgMask.cols << "; rows : " <<  _trgMask.rows << " ] " << std::endl;
+}
+
 
 /*!
  *  \brief extract feature points from reponse image.
