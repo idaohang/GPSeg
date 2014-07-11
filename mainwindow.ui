@@ -104,9 +104,6 @@
    </property>
   </action>
   <action name="actionOpen_Target">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Open Target</string>
    </property>

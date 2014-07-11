@@ -72,7 +72,7 @@
  *  Machine learning repository, http://www.ics.uci.edu/~mlearn/MLRepository.html
  *
  */
- 
+
 #ifndef FeatureEvalOp_hpp
 #define FeatureEvalOp_hpp
 
@@ -89,26 +89,29 @@
  *  \ingroup Spambase
  */
 class FeatureEvalOp : public QObject, public Beagle::GP::EvaluationOp {
-Q_OBJECT
+    Q_OBJECT
 public:
 
-  //! FeatureEvalOp allocator type.
-  typedef Beagle::AllocatorT<FeatureEvalOp,Beagle::GP::EvaluationOp::Alloc>
-          Alloc;
-  //!< FeatureEvalOp handle type.
-  typedef Beagle::PointerT<FeatureEvalOp,Beagle::GP::EvaluationOp::Handle>
-          Handle;
-  //!< FeatureEvalOp bag type.
-  typedef Beagle::ContainerT<FeatureEvalOp,Beagle::GP::EvaluationOp::Bag>
-          Bag;
+    //! FeatureEvalOp allocator type.
+    typedef Beagle::AllocatorT<FeatureEvalOp,Beagle::GP::EvaluationOp::Alloc>
+    Alloc;
+    //!< FeatureEvalOp handle type.
+    typedef Beagle::PointerT<FeatureEvalOp,Beagle::GP::EvaluationOp::Handle>
+    Handle;
+    //!< FeatureEvalOp bag type.
+    typedef Beagle::ContainerT<FeatureEvalOp,Beagle::GP::EvaluationOp::Bag>
+    Bag;
 
-  explicit FeatureEvalOp(Beagle::string inFilename="spambase.data");
+    explicit FeatureEvalOp(Beagle::string inFilename="spambase.data");
 
-  virtual void initialize(Beagle::System& ioSystem);
-  virtual Beagle::Fitness::Handle evaluate(Beagle::GP::Individual& inIndividual,
-                                           Beagle::GP::Context& ioContext);
-  virtual void postInit(Beagle::System& ioSystem);
-          void readData(Beagle::string inFilename, unsigned int inSizeData);
+    virtual void initialize(Beagle::System& ioSystem);
+    virtual Beagle::Fitness::Handle evaluate(Beagle::GP::Individual& inIndividual,
+                                             Beagle::GP::Context& ioContext);
+    virtual void postInit(Beagle::System& ioSystem);
+    void readData(Beagle::string inFilename, unsigned int inSizeData);
+
+    void setOriginImage(QString );
+    void setObjectMask(QString);
 
 public:
     static int countPts(const cv::Mat &img);
@@ -118,22 +121,22 @@ public:
     static void calculateStatistics(const cv::Mat & detected_mask, const cv::Mat & desired_mask, int desiredTotalNumPts, double & recall, double & precision, double & fitness, bool isShow = true);
 
 protected:
-  //Gaussian distribution
-  double _dGaussianDist[31];
+    //Gaussian distribution
+    double _dGaussianDist[31];
 
-  // Origin Image
-  cv::Mat									_originImage;
-  // Detected Result represented by Binary Mask
-  cv::Mat									_detMask;
-  // Target of Evolutionary Computation represented by Binary Mask
-  cv::Mat									_trgMask;
-  // Number of Pixels in Target Mask
-  int										_trgPixelNum;
-  // Features
-  Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
+    // Origin Image
+    cv::Mat									_originImage;
+    // Detected Result represented by Binary Mask
+    cv::Mat									_detMask;
+    // Target of Evolutionary Computation represented by Binary Mask
+    cv::Mat									_trgMask;
+    // Number of Pixels in Target Mask
+    int										_trgPixelNum;
+    // Features
+    Beagle::Mat _r, _g, _b, _h, _s, _v, _i;
 
-  // store best fitness value acheived
-  float _bestFitness;
+    // store best fitness value acheived
+    float _bestFitness;
 
 signals:
 

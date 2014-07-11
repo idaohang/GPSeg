@@ -62,7 +62,7 @@ void EvolveThread::run()
 
         // 3: Build operators.
         FeatureEvalOp::Handle lEvalOp = new FeatureEvalOp("message");
-
+        lEvalOp->sett
         // 4: Build an evolver and a vivarium.
         Evolver::Handle lEvolver = new GP::Evolver(lEvalOp);
         GP::Vivarium::Handle lVivarium = new GP::Vivarium;
@@ -79,7 +79,6 @@ void EvolveThread::run()
     catch(exception& inException) {
         cerr << "Standard exception catched:" << endl;
         cerr << inException.what() << endl << flush;
-
     }
     catch(...) {
         cerr << "Unknown exception catched!" << endl << flush;
@@ -88,10 +87,14 @@ void EvolveThread::run()
 
 void EvolveThread::setTargetFilename(QString target)
 {
+    cv::Mat image = cv::imread(target.toAscii().data());
+    cv::imshow("target", image);
     _strTargetFile = QString(target);
 }
 
 void EvolveThread::setOriginFilename(QString origin)
 {
+    cv::Mat image = cv::imread(origin.toAscii().data());
+    cv::imshow("Origin", image);
     _strOriginFile = QString(origin);
 }
