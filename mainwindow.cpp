@@ -19,12 +19,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView_Generations->setModel(_modelGenerations);
 
     _modelIndividuals = new QStandardItemModel(this);
-    QStringList strList;
-    strList.append("fitness");
-    strList.append("genotype");
-    _modelIndividuals->setHorizontalHeaderLabels(strList);
-    ui->tableView_Individuals->setModel(_modelIndividuals);
 
+    // initialize view header
+    QStringList strList;
+    strList.append("Fitness");
+    strList.append("Size");
+    strList.append("Depth");
+    //strList.append("Genotype");
+    _modelIndividuals->setHorizontalHeaderLabels(strList);
+
+    ui->tableView_Individuals->setModel(_modelIndividuals);
 
     // connect Table View click signal and slot
     connect(ui->tableView_Individuals, SIGNAL(clicked(QModelIndex)),
@@ -34,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(openOriginFile(QString)), _evol, SLOT(setOriginFilename(QString)));
     connect(this, SIGNAL(openTargetFile(QString)), _evol, SLOT(setTargetFilename(QString)));
-
 
     on_setGPLogDir("");
 }
@@ -74,7 +77,6 @@ void MainWindow::on_actionOpen_Origin_triggered()
         ui->label_origin->setPixmap(QPixmap(filename).scaled(ui->label_origin->width(),ui->label_origin->height(),Qt::KeepAspectRatio));
         emit openOriginFile(filename);
     }
-
 }
 
 void MainWindow::on_actionOpen_Target_triggered()
@@ -92,10 +94,8 @@ void MainWindow::on_actionOpen_Target_triggered()
 void MainWindow::tableview_individuals_clicked(QModelIndex index)
 {
     QStandardItem *item = _modelIndividuals->itemFromIndex(index);
-    qDebug() << "clicked signal";
-    qDebug() << item->text();
     ui->textEdit_Genotype->clear();
-    ui->textEdit_Genotype->setText(item->text().trimmed());
+    ui->textEdit_Genotype->setText(_genos[item->row()]);
 }
 
 void MainWindow::tableview_generations_clicked(QModelIndex index)
@@ -121,6 +121,7 @@ void MainWindow::tableview_generations_clicked(QModelIndex index)
 
     // clear old model
     _modelIndividuals->clear();
+    _genos.clear();
 
     // initialize view header
     QStringList strList;
@@ -154,7 +155,9 @@ void MainWindow::tableview_generations_clicked(QModelIndex index)
             QTextStream stream(&str);
             stream << elem.firstChildElement();
             stream.flush();
-            items.append(new QStandardItem( str.trimmed() ));
+
+            //items.append(new QStandardItem( str.trimmed() ));
+            _genos.append(str);
             _modelIndividuals->appendRow(items);
         }
 

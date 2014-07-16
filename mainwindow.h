@@ -49,6 +49,8 @@ private:
     // Models of Table View
     // individuals' view model
     QStandardItemModel * _modelIndividuals;
+    QStringList _genos;
+
     // generations' view model
     QStandardItemModel * _modelGenerations;
 };

@@ -197,7 +197,7 @@ void FeatureEvalOp::setOriginImage(QString filename)
     // populate features
     if (filename == "") return;
 
-    std::cout << "Populate Features..." << std::endl;
+    std::cout << "Populate Features... from file:" << filename.toAscii().data() << std::endl;
     cv::Mat i;
     cv::Mat origin = cv::imread(filename.toAscii().data());
 
