@@ -12,6 +12,7 @@
 #include <fstream>
 #include <algorithm>
 #include <qstring.h>
+#include <QFont>
 
 using namespace Beagle;
 
@@ -84,6 +85,38 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
     std::cout << "Total target points:" << _trgPixelNum << std::endl;
     std::cout << "Mask [ cols : " <<  _trgMask.cols << "; rows : " <<  _trgMask.rows << " ] " << std::endl;
 
+//    // initialize plotter
+//    _custamplot = new QCustomPlot();
+
+
+//    // plot for individual statistics
+//    _custamplot->addGraph();
+//    _custamplot->graph(0)->setLineStyle(QCPGraph::lsNone);
+//    _custamplot->graph(0)->setScatterStyle(QCP::ScatterStyle(QCP::ScatterStyle::ssCircle));
+//    _custamplot->graph(0)->setPen(QPen(Qt::blue));
+//    _custamplot->graph(0)->setName("Recall");
+//    _custamplot->addGraph();
+//    _custamplot->graph(1)->setPen(QPen(Qt::red));
+//    _custamplot->graph(1)->setLineStyle(QCPGraph::lsNone);
+//    _custamplot->graph(1)->setScatterStyle(QCP::ScatterStyle(QCP::ScatterStyle::ssCross));;
+//    _custamplot->graph(1)->setName("Precision");
+//    _custamplot->addGraph();
+//    _custamplot->graph(2)->setPen(QPen(Qt::green));
+//    _custamplot->graph(2)->setLineStyle(QCPGraph::lsNone);
+//    _custamplot->graph(2)->setScatterStyle(QCP::ScatterStyle(QCP::ScatterStyle::ssTriangle));;
+//    _custamplot->graph(2)->setName("Fitness");
+//    _custamplot->xAxis->setRange(0, 255);
+//    _custamplot->yAxis->setRange(0, 1.0);
+//    _custamplot->xAxis->setLabel("Threshold");
+//    _custamplot->yAxis->setLabel("Value");
+//    _custamplot->setRangeDrag(Qt::Horizontal);
+//    _custamplot->setRangeZoom(Qt::Horizontal);
+//    _custamplot->legend->setVisible(true);
+
+//    _custamplot->legend->setPositionStyle(QCPLegend::psRight);
+//    _custamplot->legend->setBrush(QBrush(QColor(255,255,255,230)));
+
+    //_custamplot->show();
 }
 
 

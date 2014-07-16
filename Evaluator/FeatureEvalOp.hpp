@@ -82,7 +82,7 @@
 #include <opencv2\opencv.hpp>
 #include <QObject>
 #include "../Operands/Mat.hpp"
-
+#include "../Widgets/qcustomplot.h"
 /*!
  *  \class FeatureEvalOp FeatureEvalOp.hpp "FeatureEvalOp.hpp"
  *  \brief The individual evaluation class operator for the Image feature extraction problem.
@@ -138,6 +138,9 @@ protected:
 
     // store best fitness value acheived
     float _bestFitness;
+
+    // statistics ploting ui
+    QCustomPlot * _custamplot;
 
 signals:
 
