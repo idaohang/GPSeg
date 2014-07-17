@@ -27,8 +27,8 @@ using namespace std;
 using namespace Beagle;
 
 EvolveThread::EvolveThread():
-    _strTargetFile(""),
-    _strOriginFile("")
+    _strTargetFile("mask.bmp"),
+    _strOriginFile("origin_m.jpg")
 {
 
 }
@@ -90,14 +90,10 @@ void EvolveThread::run()
 
 void EvolveThread::setTargetFilename(QString target)
 {
-    cv::Mat image = cv::imread(target.toAscii().data());
-    cv::imshow("target", image);
-    _strTargetFile = QString(target);
+    _strTargetFile = target;
 }
 
 void EvolveThread::setOriginFilename(QString origin)
 {
-    cv::Mat image = cv::imread(origin.toAscii().data());
-    cv::imshow("Origin", image);
-    _strOriginFile = QString(origin);
+    _strOriginFile = origin;
 }

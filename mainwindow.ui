@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -42,6 +42,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label_origin">
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -224,34 +227,15 @@
    <addaction name="actionStart_Evolving"/>
    <addaction name="separator"/>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>702</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuHello">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionOpen_Origin"/>
-    <addaction name="actionOpen_Target"/>
-    <addaction name="separator"/>
-   </widget>
-   <addaction name="menuHello"/>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_Origin">
    <property name="text">
-    <string>Open Origin</string>
+    <string>Set Origin</string>
    </property>
   </action>
   <action name="actionOpen_Target">
    <property name="text">
-    <string>Open Target</string>
+    <string>Set Target</string>
    </property>
   </action>
   <action name="actionStart_Evolving">

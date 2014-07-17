@@ -65,29 +65,8 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
         _dGaussianDist[i] = _gd[i];
     }
 
-    // populate features
-    std::cout << "Populate Features..." << std::endl;
-
-    _r.getWrappedValue() = cv::imread("r.bmp",0);
-    _g.getWrappedValue() = cv::imread("g.bmp",0);
-    _b.getWrappedValue() = cv::imread("b.bmp",0);
-    _h.getWrappedValue() = cv::imread("h.bmp",0);
-    _s.getWrappedValue() = cv::imread("s.bmp",0);
-    _v.getWrappedValue() = cv::imread("v.bmp",0);
-    _i.getWrappedValue() = cv::imread("i.bmp",0);
-
-    std::cout << "Features [ cols : " <<  _i.getWrappedValue().cols << "; rows : " <<  _i.getWrappedValue().rows << " ] " << std::endl;
-
-    // populate target
-    std::cout << "Populate Target..." << std::endl;
-    _trgMask = cv::imread("mask.bmp",0);
-    _trgPixelNum = countPts(_trgMask);
-    std::cout << "Total target points:" << _trgPixelNum << std::endl;
-    std::cout << "Mask [ cols : " <<  _trgMask.cols << "; rows : " <<  _trgMask.rows << " ] " << std::endl;
-
 //    // initialize plotter
 //    _custamplot = new QCustomPlot();
-
 
 //    // plot for individual statistics
 //    _custamplot->addGraph();
@@ -116,7 +95,7 @@ FeatureEvalOp::FeatureEvalOp(Beagle::string inFilename) :
 //    _custamplot->legend->setPositionStyle(QCPLegend::psRight);
 //    _custamplot->legend->setBrush(QBrush(QColor(255,255,255,230)));
 
-    //_custamplot->show();
+//    //_custamplot->show();
 }
 
 
@@ -244,22 +223,19 @@ void FeatureEvalOp::setOriginImage(QString filename)
     rgbA[2].convertTo(_r.getWrappedValue(), CV_32FC1);
     rgbA[1].convertTo(_g.getWrappedValue(), CV_32FC1);
     rgbA[0].convertTo(_b.getWrappedValue(), CV_32FC1);
-    cv::imshow("ruchar", rgbA[2]);
-    cv::imshow("rfloat", _r.getWrappedValue());
 
     cv::Mat hsvA[3];
     cv::split(hsv, hsvA);
     hsvA[2].convertTo(_v.getWrappedValue(), CV_32FC1);
     hsvA[1].convertTo(_s.getWrappedValue(), CV_32FC1);
     hsvA[0].convertTo(_i.getWrappedValue(), CV_32FC1);
-    cv::imshow("vuchar", hsvA[2]);
-    cv::imshow("vfloat", _v.getWrappedValue());
 
     cv::waitKey(1);
 }
 
 void FeatureEvalOp::setObjectMask(QString filename)
 {
+    if (filename == "") return;
     // populate target
     std::cout << "Populate Target..." << std::endl;
     _trgMask = cv::imread(filename.toAscii().data(),0);

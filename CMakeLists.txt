@@ -22,24 +22,24 @@ set(GP_LIBS
                         C:/GP/beagle-3.0.3/MSVCPP/beagle-GA/Debug/beagle-GA.lib
                         )
 # Package for OpenCV
-#include_directories("C:/opencv/opencv/build/include")
-#set(OpenCV_LIBS C:/opencv/opencv/build/x86/vc10/lib/opencv_gpu247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_contrib247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_legacy247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_objdetect247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_calib3d247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_features2d247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_video247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_highgui247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_ml247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_nonfree247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_imgproc247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_flann247d.lib
-#                C:/opencv/opencv/build/x86/vc10/lib/opencv_core247d.lib
-#)
-include(C:/OpenCV/build/install/OpenCVConfig.cmake)
-set(OpenCV "C:/OpenCV/build/cmake")
-find_package(OpenCV REQUIRED)
+include_directories("C:/opencv/opencv/build/include")
+set(OpenCV_LIBS C:/opencv/opencv/build/x86/vc10/lib/opencv_gpu247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_contrib247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_legacy247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_objdetect247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_calib3d247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_features2d247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_video247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_highgui247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_ml247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_nonfree247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_imgproc247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_flann247d.lib
+                C:/opencv/opencv/build/x86/vc10/lib/opencv_core247d.lib
+)
+#include(C:/OpenCV/build/install/OpenCVConfig.cmake)
+#set(OpenCV "C:/OpenCV/build/cmake")
+#find_package(OpenCV REQUIRED)
 
 # Package for Qt
 find_package(Qt4 REQUIRED)
