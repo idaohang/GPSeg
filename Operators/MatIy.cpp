@@ -22,7 +22,7 @@ MatIy::MatIy() :
 #ifdef BEAGLE_HAVE_RTTI
 
 /*!
- *  \brief Return the Double tag needed as input for the primitive MatIy.
+ *  \brief Return the Mat tag needed as input for the primitive MatIy.
  *  \param inN Index of the argument to get the tag.
  *  \param ioContext Evolutionary context.
  *  \return RTTO type_info tagging the data type Double.
@@ -36,7 +36,7 @@ const std::type_info* MatIy::getArgType(unsigned int inN, Beagle::GP::Context& i
 
 
 /*!
- *  \brief Return the string tagging the Bool type returned but the primitive MatIy.
+ *  \brief Return the Mat tagging the Bool type returned but the primitive MatIy.
  *  \param ioContext Evolutionary context.
  *  \return RTTI type_info tagging the Bool type returned.
  */

@@ -13,6 +13,7 @@
 #include "../Operators/Impl/MatSquare.hpp"
 #include "../Operators/Impl/MatIx.hpp"
 #include "../Operators/Impl/MatIy.hpp"
+#include "../Operators/Impl/MatThresh.hpp"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
@@ -46,6 +47,7 @@ void EvolveThread::run()
         lSet->insert(new MatIy);
         lSet->insert(new MatBlur);
         lSet->insert(new MatMulDou);
+        lSet->insert(new MatThresh);
 
         lSet->insert(new EphemeralPercent);
 
@@ -65,7 +67,6 @@ void EvolveThread::run()
         lEvalOp->setObjectMask(_strTargetFile);
         lEvalOp->setOriginImage(_strOriginFile);
 
-        std::cout << "8888888" << std::endl;
         // 4: Build an evolver and a vivarium.
         Evolver::Handle lEvolver = new GP::Evolver(lEvalOp);
         GP::Vivarium::Handle lVivarium = new GP::Vivarium;

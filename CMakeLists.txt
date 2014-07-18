@@ -81,6 +81,7 @@ set(IMPL_INCS
 	Operators/Impl/MatBlur.hpp
 	Operators/Impl/MatIx.hpp
 	Operators/Impl/MatIy.hpp
+        Operators/Impl/MatThresh.hpp
 )
 
 set(SRCS
@@ -93,6 +94,7 @@ set(SRCS
 	Operators/MatBlur.cpp
 	Operators/MatIx.cpp
 	Operators/MatIy.cpp
+        Operators/MatThresh.cpp
 	main.cpp    
         mainwindow.cpp
         Thread/Impl/SegController.cpp

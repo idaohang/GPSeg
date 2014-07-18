@@ -129,7 +129,6 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
     Mat lResult;
     inIndividual.run(lResult, ioContext);
 
-    //cv::Mat_<float>& result = lResult.getWrappedValue();
     // Normalize to Interval [0 ,255]
     cv::Mat norm;
     cv::normalize( lResult.getWrappedValue(), norm, 0, 255, cv::NORM_MINMAX, CV_8UC1, cv::Mat() );
@@ -174,6 +173,7 @@ Fitness::Handle FeatureEvalOp::evaluate(GP::Individual& inIndividual, GP::Contex
         FeatureEvalOp::calculateStatistics(_detMask, _trgMask, _trgPixelNum, recall, precision, fitness, true);
         _bestFitness = lFitness;
     }
+
     // output fitness value and tree statistics
     int iTreeDepth = inIndividual.getMaxTreeDepth();
     int iTreeNodesNo = inIndividual.getTotalNodes();
@@ -228,7 +228,15 @@ void FeatureEvalOp::setOriginImage(QString filename)
     cv::split(hsv, hsvA);
     hsvA[2].convertTo(_v.getWrappedValue(), CV_32FC1);
     hsvA[1].convertTo(_s.getWrappedValue(), CV_32FC1);
-    hsvA[0].convertTo(_i.getWrappedValue(), CV_32FC1);
+    hsvA[0].convertTo(_h.getWrappedValue(), CV_32FC1);
+
+    std::cout << "Feature I [ cols : " <<  _i.getWrappedValue().cols << "; rows : " <<  _i.getWrappedValue().rows << " ] Chan:" << _i.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature R [ cols : " <<  _r.getWrappedValue().cols << "; rows : " <<  _r.getWrappedValue().rows << " ] Chan:" << _r.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature G [ cols : " <<  _g.getWrappedValue().cols << "; rows : " <<  _g.getWrappedValue().rows << " ] Chan:" << _g.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature B [ cols : " <<  _b.getWrappedValue().cols << "; rows : " <<  _b.getWrappedValue().rows << " ] Chan:" << _b.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature V [ cols : " <<  _v.getWrappedValue().cols << "; rows : " <<  _v.getWrappedValue().rows << " ] Chan:" << _v.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature S [ cols : " <<  _s.getWrappedValue().cols << "; rows : " <<  _s.getWrappedValue().rows << " ] Chan:" << _s.getWrappedValue().channels() << std::endl;
+    std::cout << "Feature H [ cols : " <<  _h.getWrappedValue().cols << "; rows : " <<  _h.getWrappedValue().rows << " ] Chan:" << _h.getWrappedValue().channels() << std::endl;
 
     cv::waitKey(1);
 }
